@@ -1,7 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-const GithubBadges = () => {
-  return (<div className="flex justify-center">
+import homePng from '../images/home.png';
+
+const GithubBadges = ({className}) => {
+  return (<div className={`justify-center ${className}`}>
     <div className="ph2">
       <a href="https://github.com/krimlabs/eiphop">
         <img src="https://img.shields.io/github/stars/krimlabs/eiphop?style=social" alt=""/>
@@ -20,12 +23,17 @@ const GithubBadges = () => {
   </div>);
 };
 
-const Nav = () => {
-  return (<div className="flex fixed top-0 w-100 justify-between pa2">
-      <div className="ttu f7 b o-80">
-        <a href="https://krimlabs.com">Made by Krim Labs</a>
-      </div>
-      <GithubBadges />
+const Nav = ({showHome}) => {
+  return (<div className="flex justify-between pa2 white">
+      {showHome ? 
+        <div className="ttu f7 b">
+          <Link to="/"><img src={homePng} style={{height: 12}} className="mr1"/>Home</Link>
+        </div> :
+        <div className="ttu f7 b o-80">
+          <a href="https://krimlabs.com">Made by Krim Labs</a>
+        </div>
+      }
+      <GithubBadges className="flex-ns dn"/>
   </div>);
 };
 
