@@ -5,18 +5,17 @@ import {Route, Switch} from 'react-router-dom';
 import './app.css';
 import './tachyons.min.css';
 
-import Landing from './pages/Landing';
-import License from './pages/License';
-import Docs from './pages/Docs';
+const Loading = () => {
+  return (<div className="vh-100 w-100 bg-black white-20">
+    Loading ...
+  </div>)
+}
 
 const App = () => {
   return (<Root>
-    <Switch>
-      <Route exact path="/" component={Landing} />
-      <Route exact path="/license" component={License} />
-      <Route exact path="/docs" component={Docs} />
-      <Route render={() => <Routes />} />
-    </Switch>
+    <React.Suspense fallback={<Loading />}>
+      <Route component={Routes} />
+    </React.Suspense>
   </Root>)
 };
 
