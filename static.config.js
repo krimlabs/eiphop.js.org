@@ -9,17 +9,26 @@ const docIndex = [{
   content: [{
     title: "Installation"
   }, {
+    title: "Mental Model"
+  },{
     title: "Setup Main"
   }, {
     title: "Setup Renderer"
 }]}, {
-  title: "Sending Messages",
+  title: "Usage",
   content: [{
-    title: "Sending Request"
+    title: "Requests"
   }, {
-    title: "Sending Response"
+    title: "Notifiers"
+  }]
+}, {
+  title: "API",
+  content: [{
+    title: 'setupMainHandler'
   }, {
-    title: "Sending Updates"
+    title: 'setupFrontendListener'
+  }, {
+    title: 'emit'
   }]
 }];
 
@@ -32,7 +41,6 @@ const docRoutes = docIndex.map(top => top.content.map(c => ({
 export default {
   plugins: [
     'react-static-plugin-react-router',
-    'react-static-plugin-mdx',
     [
       require.resolve('react-static-plugin-source-filesystem'),
       {

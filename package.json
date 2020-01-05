@@ -9,6 +9,7 @@
     "serve": "serve dist -p 3000"
   },
   "dependencies": {
+    "@mdx-js/loader": "^1.0.0-rc.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-router": "^5.1.2",
