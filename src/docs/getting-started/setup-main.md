@@ -1,3 +1,6 @@
+---
+slug: setup-main
+---
 # Setup Main
 
 ## Define Actions

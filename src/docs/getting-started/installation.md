@@ -1,3 +1,6 @@
+---
+slug: installation
+---
 # Installation
 
 The current stable version is `v1.0.12` and is hosted on NPM package registry at **https://www.npmjs.com/package/eiphop**:

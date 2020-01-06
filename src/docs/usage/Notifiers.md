@@ -1,3 +1,6 @@
+---
+slug: notifiers
+---
 # Notifiers
 
 `res.send` resolves the request but created by `emit` but sometimes you might need to send intermediate state.

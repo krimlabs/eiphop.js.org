@@ -1,3 +1,6 @@
+---
+slug: mental-model
+---
 # Mental Model
 
 The builtin **[electron IPC model](https://electronjs.org/docs/api/ipc-main)** is based on channels & callbacks. You fire a request and forget about it. When the response arrives, the callback is called. This leads to multiple subscribers and providers. 

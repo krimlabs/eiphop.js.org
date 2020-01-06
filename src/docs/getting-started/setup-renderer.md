@@ -1,3 +1,7 @@
+---
+slug: setup-renderer
+---
+
 # Setup Renderer
 
 To call functions defined in the `main` process, we need to setup the `renderer` to call functions and capture the return value. 

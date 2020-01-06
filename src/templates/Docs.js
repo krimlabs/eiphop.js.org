@@ -1,32 +1,33 @@
 import React from 'react';
 import {useRouteData, useLocation} from 'react-static';
 import {Link, Redirect} from 'react-router-dom';
+import convert from 'htmr';
+import {capitalCase} from 'change-case';
 
 import Nav from '../components/Nav';
 import string from '../utils/string';
 
-// import GettingStartedInstallation from '../docs/gettingStarted/Installation.md';
-// import GettingStartedMentalModel from '../docs/gettingStarted/MentalModel.md';
-// import GettingStartedSetupMain from '../docs/gettingStarted/SetupMain.md';
-// import GettingStartedSetupRenderer from '../docs/gettingStarted/SetupRenderer.md';
-// import UsageRequests from '../docs/usage/Requests.md';
-// import UsageNotifiers from '../docs/usage/Notifiers.md';
+const index = {
+  'getting-started': ['installation', 'mental-model', 'setup-main', 'setup-renderer'], 
+  'usage': ['requests', 'notifiers']
+};
 
-const Sidebar = ({docIndex}) => {
+const Sidebar = () => {
   const location = useLocation();
+
   return (<div className="br b--white-20 pt4" style={{height: '90vh'}}>
-    {docIndex.map(top => (<div className="mb3" key={string.slugify(top.title)}>
-      <div className="mb1 ttu f7 white-50 pl2 pr4">{top.title}</div>
+    {Object.keys(index).map(parentKey => (<div className="mb3" key={parentKey}>
+      <div className="mb1 ttu f7 white-50 pl2 pr4">{capitalCase(parentKey)}</div>
       <div>
-        {top.content.map(c => {
-          const pathname = `/docs/${string.slugify(top.title)}/${string.slugify(c.title)}`;
+        {index[parentKey].map(childKey => {
+          const pathname = `/docs/${parentKey}/${childKey}`;
           const active = (location && location.pathname === pathname) || (window && window.location.pathname === pathname);
           return (<Link 
-            key={string.slugify(c.title)} 
+            key={childKey} 
             to={pathname}
           >
             <div className={`pointer dim pl2 pr4 pv1 ${active ? "bg-white black" : ""}`}>
-              {c.title}
+              {capitalCase(childKey)}
             </div>
           </Link>);
         })}
@@ -35,42 +36,69 @@ const Sidebar = ({docIndex}) => {
   </div>);
 };
 
-const docTitleToComponentMap = {
-  // 'Installation': GettingStartedInstallation,
-  // 'Mental Model': GettingStartedMentalModel,
-  // 'Setup Main': GettingStartedSetupMain,
-  // 'Setup Renderer': GettingStartedSetupRenderer,
-  // 'Requests': UsageRequests,
-  // 'Notifiers': UsageNotifiers,
-};
-
 const Section = ({doc}) => {
-  const Component = docTitleToComponentMap[doc.title];
-  if (!Component) return (<div className="ph4">Documentation for {doc.title} coming soon!</div>);
+  const thisParentKey = Object.keys(index).find(parentKey => index[parentKey].indexOf(doc.slug) > -1);
+  const nextParentKey = Object.keys(index)[Object.keys(index).indexOf(thisParentKey) + 1];
+  const previousParentKey = Object.keys(index)[Object.keys(index).indexOf(thisParentKey) - 1];
+
+  const nextChildKeyInThisParent = index[thisParentKey][index[thisParentKey].indexOf(doc.slug) + 1];
+  const previousChildKeyInThisParent = index[thisParentKey][index[thisParentKey].indexOf(doc.slug) - 1];
+
+  const next = nextChildKeyInThisParent ? 
+    {parentKey: thisParentKey, childKey: nextChildKeyInThisParent} :
+    nextParentKey ? 
+      {parentKey: nextParentKey, childKey: index[nextParentKey][0]} : 
+      null
+  ;
+
+  // reduceRight gives the last element of array
+  // https://stackoverflow.com/questions/3216013/get-the-last-item-in-an-array-in-javascript
+  const previous = previousChildKeyInThisParent ? 
+    {parentKey: thisParentKey, childKey: previousChildKeyInThisParent} :
+    previousParentKey ? 
+      {parentKey: previousParentKey, childKey: index[previousParentKey].reduceRight(i => i)} : 
+      null
+  ;
 
   return (<div className="ph4 flex-auto lh-copy overflow-y-scroll" style={{height: '90vh'}}>
-    <div className="w-60 word-wrap">
-      <Component />
+    <div className="w-100 w-90-m w-60-l word-wrap">
+
+      <div>{convert(doc.contents)}</div>
+
+      <div className="flex justify-between mt4">
+        {previous && <Link to={`/docs/${previous.parentKey}/${previous.childKey}`}>
+          <div className="ba pv2 ph4 br2 pointer dim">
+            <div className="f7">Previous</div>
+            {capitalCase(previous.childKey)}
+          </div>
+        </Link>}
+        {!previous && <div />}
+        {next && <Link to={`/docs/${next.parentKey}/${next.childKey}`}>
+          <div className="ba pv2 ph4 br2 pointer dim">
+            <div className="f7">Next</div>
+            {capitalCase(next.childKey)}
+          </div>
+        </Link>}
+        {!next && <div />}
+      </div>
     </div>
   </div>);
-}
+};
 
 
 const Docs = () => {
-  const {docIndex, doc, docsContent} = useRouteData();
+  const {doc} = useRouteData();
   const location = useLocation();
 
-  console.log(docsContent)
-
-  // if (!location || location && location.pathname === '/docs') {
-  //   return (<Redirect to={`/docs/${string.slugify(docIndex[0].title)}/${string.slugify(docIndex[0].content[0].title)}`} />)
-  // }
+  if (!location || location && location.pathname === '/docs') {
+    return (<Redirect to={"/docs/getting-started/installation"} />)
+  }
 
   return (<div className="flex flex-column bg-black min-vh-100 white">
     <Nav showHome />
     <div className="cf">
       <div className="fl" style={{width: '16%'}}>
-        <Sidebar docIndex={docIndex} />
+        <Sidebar />
       </div>
       <div className="fl" style={{width: `${100-16}%`}}>
         <Section doc={doc} />

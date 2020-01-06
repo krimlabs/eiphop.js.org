@@ -1,3 +1,7 @@
+---
+slug: requests
+---
+
 # Requests
 
 Use the `emit` function to call actions defined in the main action map. 
