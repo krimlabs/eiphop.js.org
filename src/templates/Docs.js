@@ -5,12 +5,12 @@ import {Link, Redirect} from 'react-router-dom';
 import Nav from '../components/Nav';
 import string from '../utils/string';
 
-import GettingStartedInstallation from '../docs/gettingStarted/Installation.md';
-import GettingStartedMentalModel from '../docs/gettingStarted/MentalModel.md';
-import GettingStartedSetupMain from '../docs/gettingStarted/SetupMain.md';
-import GettingStartedSetupRenderer from '../docs/gettingStarted/SetupRenderer.md';
-import UsageRequests from '../docs/usage/Requests.md';
-import UsageNotifiers from '../docs/usage/Notifiers.md';
+// import GettingStartedInstallation from '../docs/gettingStarted/Installation.md';
+// import GettingStartedMentalModel from '../docs/gettingStarted/MentalModel.md';
+// import GettingStartedSetupMain from '../docs/gettingStarted/SetupMain.md';
+// import GettingStartedSetupRenderer from '../docs/gettingStarted/SetupRenderer.md';
+// import UsageRequests from '../docs/usage/Requests.md';
+// import UsageNotifiers from '../docs/usage/Notifiers.md';
 
 const Sidebar = ({docIndex}) => {
   const location = useLocation();
@@ -36,12 +36,12 @@ const Sidebar = ({docIndex}) => {
 };
 
 const docTitleToComponentMap = {
-  'Installation': GettingStartedInstallation,
-  'Mental Model': GettingStartedMentalModel,
-  'Setup Main': GettingStartedSetupMain,
-  'Setup Renderer': GettingStartedSetupRenderer,
-  'Requests': UsageRequests,
-  'Notifiers': UsageNotifiers,
+  // 'Installation': GettingStartedInstallation,
+  // 'Mental Model': GettingStartedMentalModel,
+  // 'Setup Main': GettingStartedSetupMain,
+  // 'Setup Renderer': GettingStartedSetupRenderer,
+  // 'Requests': UsageRequests,
+  // 'Notifiers': UsageNotifiers,
 };
 
 const Section = ({doc}) => {
@@ -57,12 +57,14 @@ const Section = ({doc}) => {
 
 
 const Docs = () => {
-  const {docIndex, doc} = useRouteData();
+  const {docIndex, doc, docsContent} = useRouteData();
   const location = useLocation();
 
-  if (!location || location && location.pathname === '/docs') {
-    return (<Redirect to={`/docs/${string.slugify(docIndex[0].title)}/${string.slugify(docIndex[0].content[0].title)}`} />)
-  }
+  console.log(docsContent)
+
+  // if (!location || location && location.pathname === '/docs') {
+  //   return (<Redirect to={`/docs/${string.slugify(docIndex[0].title)}/${string.slugify(docIndex[0].content[0].title)}`} />)
+  // }
 
   return (<div className="flex flex-column bg-black min-vh-100 white">
     <Nav showHome />

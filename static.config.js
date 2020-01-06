@@ -1,4 +1,5 @@
 import path from 'path';
+import jdown from 'jdown';
 
 const slugify = (s) => {
   return s.toLowerCase().replace(/ /g, '-');
@@ -41,17 +42,18 @@ const docRoutes = docIndex.map(top => top.content.map(c => ({
 export default {
   plugins: [
     'react-static-plugin-react-router',
-    [
-      require.resolve('react-static-plugin-source-filesystem'),
-      {
-        location: 'src/pages',
-      },
-    ]
+    [require.resolve('react-static-plugin-source-filesystem'), {
+      location: 'src/pages'
+    }]
   ],
-  getRoutes: async ({dev}) => [{
-    path: '/docs',
-    template: 'src/templates/Docs',
-    getData: () => ({docIndex}),
-    children: docRoutes
-  }]
+  getRoutes: async () => {
+    const docsContent = await jdown('src/docs');
+
+    return [{
+      path: '/docs',
+      template: 'src/templates/Docs',
+      getData: () => ({docIndex, docsContent}),
+      children: docRoutes
+    }];
+  }
 }
